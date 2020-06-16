@@ -19,9 +19,8 @@ as a standalone.
 
 ## Installation
 
-- Download zip
+- [Download latest zip from releases section](https://github.com/buttplugio/buttplug-unity/releases)
 - Unzip somewhere
 - In Unity Project Frame, right click "Assets" > "Import Package" > "Custom Package"
 - Choose package.json from buttplug-unity.
 - Start using Buttplug classes in your scripts
-
