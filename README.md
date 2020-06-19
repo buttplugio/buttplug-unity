@@ -14,8 +14,9 @@ expected that anything built with this will either connect to
 [Intiface Desktop](https://github.com/intiface/intiface-desktop) or
 [Intiface CLI](https://github.com/intiface/intiface-cli-csharp).
 
-Future releases will contain the Intiface CLI executable and will work
-as a standalone.
+Buttplug Unity contains a Intiface CLI executable, so Intiface Desktop
+is not required. It is still recommended that you allow users to
+connect out to ID somehow, though.
 
 ## Installation
 
