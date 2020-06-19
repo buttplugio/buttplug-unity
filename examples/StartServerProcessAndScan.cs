@@ -1,7 +1,8 @@
 // This is not a particularly good example, as process bringup and notification
-// will be handled by the package itself soon. But, if you absolutely cannot
-// wait to start playing with Buttplug and Unity, this is what you need to do in
-// order to bring up the server, then connect the client to it.
+// will be handled by the Buttplug Unity package itself soon. But, if you
+// absolutely cannot wait to start playing with Buttplug and Unity, this is what
+// you need to do in order to bring up the server, then connect the client to
+// it.
 //
 // This is just a generic behavior, so you can attach it to any active object in
 // your scene and it'll run on scene load.
@@ -21,13 +22,19 @@ public class NewBehaviourScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+        // We want to start the CLI process without a window, and capture output
+        // from stdout at the moment just to see if it's alive. Crude, but it
+        // does the job of making sure we don't try to connect before the
+        // process spins up. This will change to using the Intiface Protobuf
+        // system in the future.
         UnityEngine.Debug.Log(Application.streamingAssetsPath);
         var processPath = Path.Combine(Application.streamingAssetsPath, "IntifaceCLI.exe");
         var processInfo = new ProcessStartInfo(processPath);
         processInfo.CreateNoWindow = true;
         processInfo.RedirectStandardOutput = true;
         processInfo.UseShellExecute = false;
+        // 12345 is our default port. This should most likely choose a random
+        // high port, and will most likely do so in the future.
         processInfo.Arguments = "--wsinsecureport 12345";
         serverProcess = Process.Start(processInfo);
         serverProcess.OutputDataReceived += OnServerStart;
@@ -35,25 +42,34 @@ public class NewBehaviourScript : MonoBehaviour
         UnityEngine.Debug.Log("Hi I am a cube that is starting up");
     }
 
-    void OnServerStart(object sender, DataReceivedEventArgs e) {
+    async void OnServerStart(object sender, DataReceivedEventArgs e) {
         UnityEngine.Debug.Log("Got line, starting server");
-        StartClient();
+        await StartClient();
         serverProcess.OutputDataReceived -= OnServerStart;
     }
 
-    void StartClient() {
+    async void StartClient() {
+        // We will probably handle client setup,
         var connector = new ButtplugWebsocketConnector(new Uri("ws://localhost:12345/buttplug"));
-
-        // ButtplugClient creation is the same as the last example. From here on out, things look
-        // basically the same.
         client = new ButtplugClient("Example Client", connector);
         UnityEngine.Debug.Log("I am connecting.");
-        client.ConnectAsync().GetAwaiter().GetResult();
+
+        // Here and below, if you want to block instead of dealing with async,
+        // replace "await []" with "[].GetAwaiter().GetResult()". i.e.
+        // "client.ConnectAsync().GetAwaiter().GetResult()"
+        await client.ConnectAsync();
         UnityEngine.Debug.Log("I connected.");
 
+        // This block will tell the server to send us all of the log messages it
+        // generates, and routes them to the Unity console. Useful for
+        // debugging, but also pretty spammy. Turn down the log level to Info if
+        // you want less messages.
         client.Log += (aObj, aLogEvent) =>
             UnityEngine.Debug.Log($"{aLogEvent.Message.LogLevel}: {aLogEvent.Message.LogMessage}");
-        client.RequestLogAsync(ButtplugLogLevel.Debug).GetAwaiter().GetResult();
+        await client.RequestLogAsync(ButtplugLogLevel.Debug);
+
+        // Set up the device addition events so we can see in the console when
+        // we connect to a device.
         client.DeviceAdded += (aObj, aDeviceEventArgs) =>
             UnityEngine.Debug.Log($"Device {aDeviceEventArgs.Device.Name} Connected!");
 
@@ -62,7 +78,7 @@ public class NewBehaviourScript : MonoBehaviour
 
         client.ScanningFinished += (aObj, aScanningFinishedArgs) =>
             UnityEngine.Debug.Log("Device scanning is finished!");
-        client.StartScanningAsync().GetAwaiter().GetResult();
+        await client.StartScanningAsync();
     }
 
     // Update is called once per frame
@@ -73,6 +89,8 @@ public class NewBehaviourScript : MonoBehaviour
 
     void OnDestroy()
     {
+        // On object shutdown, disconnect the client and just kill the server
+        // process. Server process shutdown will be cleaner in future builds.
         this.client?.DisconnectAsync().GetAwaiter().GetResult();
         this.client = null;
         this.serverProcess.Kill();
