@@ -46,7 +46,7 @@ public class Startup {
           Debug.Log($"Copying engine executable {engineExecutable} to {targetExecutable}");
           File.Copy(engineExecutable, targetExecutable, true);
           Debug.Log("Buttplug engine file copy successful");
-        } catch (Exception e) {
+        } catch (System.Exception e) {
           Debug.Log($"File copy failed: {e}");
         }
     }
