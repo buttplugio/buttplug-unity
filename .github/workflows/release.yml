@@ -1,0 +1,16 @@
+on:
+  push:
+    branches:
+      - master
+      - dev
+    tags:
+      - *
+
+
+
+# Copy latest Intiface CLI
+
+
+- name: Fetch Github Release Asset
+  uses: dsaltares/fetch-gh-release-asset@0.0.4
+
