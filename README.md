@@ -1,5 +1,11 @@
 # Buttplug Unity
 
+[![Patreon donate button](https://img.shields.io/badge/patreon-donate-yellow.svg)](https://www.patreon.com/qdot)
+[![Github sponsor button](https://img.shields.io/static/v1?label=Sponsor&message=%E2%9D%A4&logo=GitHub)](https://github.com/sponsors/qdot)
+[![Discourse Forum](https://img.shields.io/badge/discourse-forum-blue.svg)](https://metafetish.club)
+[![Discord](https://img.shields.io/discord/353303527587708932.svg?logo=discord)](https://discord.buttplug.io)
+[![Twitter](https://img.shields.io/twitter/follow/buttplugio.svg?style=social&logo=twitter)](https://twitter.com/buttplugio)
+
 Unity Package for Buttplug support in Unity 2019.1+.
 
 Only the following classes should be used:
@@ -20,8 +26,7 @@ connect out to ID somehow, though.
 
 ## Installation
 
-- [Download latest zip from releases section](https://github.com/buttplugio/buttplug-unity/releases)
-- Unzip somewhere
+- [Download latest zip or tgz from releases section](https://github.com/buttplugio/buttplug-unity/releases)
 - In the Unity Project Window, go to *Window* > *Package Manager* and hit the
   "+" button. Choose either:
   - "Add Package from Disk" (if you downloaded and unzip'd the zip file), then
