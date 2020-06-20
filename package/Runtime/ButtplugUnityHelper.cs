@@ -14,7 +14,7 @@ using Buttplug.Client.Connectors.WebsocketConnector;
 
 namespace ButtplugUnity
 {
-  public class ButtplugUnity
+  public class ButtplugUnityHelper
   {
     // The server process, assuming we've been asked to bring one up. Should be
     // null if not running.
@@ -31,7 +31,7 @@ namespace ButtplugUnity
 
     // Outputs a debug message to the console if outputDebugMessages is true.
     private static void MaybeDebugLog(string msg) {
-      if (ButtplugUnity.outputDebugMessages) {
+      if (ButtplugUnityHelper.outputDebugMessages) {
         UnityEngine.Debug.Log(msg);
       }
     }
@@ -42,14 +42,14 @@ namespace ButtplugUnity
     //
     // Throws if server is already running, or if server process fails to start
     // up, or if client fails to connect for some reason.
-    public static async Task<ButtplugClient> StartProcessAndCreateClient(ButtplugUnityClientOptions options)
+    public static async Task<ButtplugClient> StartProcessAndCreateClient(ButtplugUnityOptions options)
     {
-      ButtplugUnity.MaybeDebugLog("Bringing up Buttplug Server/Client");
+      ButtplugUnityHelper.MaybeDebugLog("Bringing up Buttplug Server/Client");
       // If the server is already up, we can't start it again, but we also can't
       // hand back a client. Throw.
-      if (ButtplugUnity.serverProcess != null)
+      if (ButtplugUnityHelper.serverProcess != null)
       {
-        ButtplugUnity.MaybeDebugLog("Server already running, throwing");
+        ButtplugUnityHelper.MaybeDebugLog("Server already running, throwing");
         throw new InvalidOperationException("Server already running.");
       }
 
@@ -59,7 +59,7 @@ namespace ButtplugUnity
         var rand = new System.Random();
         websocketPort = (ushort)rand.Next(10000, 60000);
       }
-      ButtplugUnity.MaybeDebugLog($"Setting websocket port to {websocketPort}");
+      ButtplugUnityHelper.MaybeDebugLog($"Setting websocket port to {websocketPort}");
 
       // We want to start the CLI process without a window, and capture output
       // from stdout at the moment just to see if it's alive. Crude, but it
@@ -70,7 +70,7 @@ namespace ButtplugUnity
       {
 
         // Create a new task that will resolve when the server comes up.
-        ButtplugUnity.serverBringupTask = new TaskCompletionSource<bool>();
+        ButtplugUnityHelper.serverBringupTask = new TaskCompletionSource<bool>();
 
         var processPath = Path.Combine(Application.streamingAssetsPath, "Buttplug", "IntifaceCLI.exe");
         var serverProcess = new Process();
@@ -82,22 +82,22 @@ namespace ButtplugUnity
         serverProcess.StartInfo.UseShellExecute = false;
         serverProcess.StartInfo.Arguments = $"--wsinsecureport {websocketPort} --pingtime {options.ServerPingTime}";
 
-        ButtplugUnity.MaybeDebugLog($"Starting task with arguments: {serverProcess.StartInfo.Arguments}");
-        serverProcess.Exited += ButtplugUnity.OnServerExit;
-        serverProcess.OutputDataReceived += ButtplugUnity.OnServerStart;
+        ButtplugUnityHelper.MaybeDebugLog($"Starting task with arguments: {serverProcess.StartInfo.Arguments}");
+        serverProcess.Exited += ButtplugUnityHelper.OnServerExit;
+        serverProcess.OutputDataReceived += ButtplugUnityHelper.OnServerStart;
 
-        ButtplugUnity.serverProcess = serverProcess;
+        ButtplugUnityHelper.serverProcess = serverProcess;
         serverProcess.Start();
         serverProcess.BeginOutputReadLine();
-        ButtplugUnity.MaybeDebugLog("Waiting for task output");
+        ButtplugUnityHelper.MaybeDebugLog("Waiting for task output");
         // Wait to get something from the process
-        await ButtplugUnity.serverBringupTask.Task;
+        await ButtplugUnityHelper.serverBringupTask.Task;
         // Reset our bringup task to null now that the process is either up or dead.
-        ButtplugUnity.serverBringupTask = null;
-        if (ButtplugUnity.serverProcess == null)
+        ButtplugUnityHelper.serverBringupTask = null;
+        if (ButtplugUnityHelper.serverProcess == null)
         {
-          ButtplugUnity.MaybeDebugLog("Process died before bringup finished.");
-          throw new ApplicationException("ButtplugUnity: Intiface process exited or crashed while coming up.");
+          ButtplugUnityHelper.MaybeDebugLog("Process died before bringup finished.");
+          throw new ApplicationException("ButtplugUnityHelper: Intiface process exited or crashed while coming up.");
         }
       }
 
@@ -110,52 +110,52 @@ namespace ButtplugUnity
 
     private static void OnServerExit(object sender, EventArgs e)
     {
-      ButtplugUnity.MaybeDebugLog("Server process exited.");
+      ButtplugUnityHelper.MaybeDebugLog("Server process exited.");
       // If our process exited before outputing anything (crashed, etc...), fire
       // the task so StartProcess will clear out.
-      if (ButtplugUnity.serverBringupTask != null)
+      if (ButtplugUnityHelper.serverBringupTask != null)
       {
-        ButtplugUnity.serverBringupTask.SetResult(true);
+        ButtplugUnityHelper.serverBringupTask.SetResult(true);
       }
       // Otherwise, we should just clean up, while letting shutdown know that
       // the process doesn't need to be killed.
-      ButtplugUnity.StopServer(true);
+      ButtplugUnityHelper.StopServer(true);
     }
 
     private static void OnServerStart(object sender, DataReceivedEventArgs e)
     {
-      ButtplugUnity.MaybeDebugLog("Server process started, got stdout line.");
+      ButtplugUnityHelper.MaybeDebugLog("Server process started, got stdout line.");
       // This should only be called when the server first starts. Once that
       // happens, it should just pass off to the actual logging event handler.
-      ButtplugUnity.serverBringupTask.SetResult(true);
-      ButtplugUnity.serverProcess.OutputDataReceived -= ButtplugUnity.OnServerStart;
-      ButtplugUnity.serverProcess.OutputDataReceived += ButtplugUnity.OnServerLogMessage;
-      ButtplugUnity.OnServerLogMessage(sender, e);
+      ButtplugUnityHelper.serverBringupTask.SetResult(true);
+      ButtplugUnityHelper.serverProcess.OutputDataReceived -= ButtplugUnityHelper.OnServerStart;
+      ButtplugUnityHelper.serverProcess.OutputDataReceived += ButtplugUnityHelper.OnServerLogMessage;
+      ButtplugUnityHelper.OnServerLogMessage(sender, e);
     }
 
     private static void OnServerLogMessage(object sender, DataReceivedEventArgs e)
     {
-      ButtplugUnity.MaybeDebugLog($"Intiface Process Output: {e.Data}");
-      ButtplugUnity.ProcessLogReceived?.Invoke(null, e.Data);
+      ButtplugUnityHelper.MaybeDebugLog($"Intiface Process Output: {e.Data}");
+      ButtplugUnityHelper.ProcessLogReceived?.Invoke(null, e.Data);
     }
 
     // Assuming a server process is running, stops it, detaches event handlers,
     // and sets it to null.
     public static void StopServer(bool exited = false)
     {
-      if (ButtplugUnity.serverProcess == null) {
+      if (ButtplugUnityHelper.serverProcess == null) {
         return;
       }
       // Remove the exit event handler before killing the process, otherwise the
       // event handler will call StopServer and we'll end up in an infinite
       // event loop (heh).
-      ButtplugUnity.serverProcess.Exited -= ButtplugUnity.OnServerExit;
-      ButtplugUnity.serverProcess.OutputDataReceived -= ButtplugUnity.OnServerLogMessage;
+      ButtplugUnityHelper.serverProcess.Exited -= ButtplugUnityHelper.OnServerExit;
+      ButtplugUnityHelper.serverProcess.OutputDataReceived -= ButtplugUnityHelper.OnServerLogMessage;
       if (!exited)
       {
-        ButtplugUnity.serverProcess.Kill();
+        ButtplugUnityHelper.serverProcess.Kill();
       }
-      ButtplugUnity.serverProcess = null;
+      ButtplugUnityHelper.serverProcess = null;
     }
   }
 }

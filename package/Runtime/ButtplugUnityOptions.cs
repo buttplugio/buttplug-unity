@@ -6,7 +6,7 @@
 using System;
 
 namespace ButtplugUnity {
-  public class ButtplugUnityClientOptions {
+  public class ButtplugUnityOptions {
     // Client name. Not particularly useful unless you're connecting out to
     // Intiface Desktop, but if you are it will show up in the Intiface Desktop
     // GUI.
