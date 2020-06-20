@@ -24,6 +24,10 @@ Buttplug Unity contains a Intiface CLI executable, so Intiface Desktop
 is not required. It is still recommended that you allow users to
 connect out to ID somehow, though.
 
+During the initial phase of rollout, Buttplug Unity will be updated frequently
+and the API will change often. Any updates to the minor version (X in 0.X.Y)
+will denote a breaking API change.
+
 ## Installation
 
 - [Download latest zip or tgz from releases section](https://github.com/buttplugio/buttplug-unity/releases)
@@ -41,9 +45,10 @@ connect out to ID somehow, though.
 
 ## Usage
 
-During the initial phase of rollout, Buttplug Unity will be updated frequently
-and the API will change often. Any updates to the minor version (X in 0.X.Y)
-will denote a breaking API change.
+To use Buttplug Unity, you need to set your Windows Player Settings to
+use script version .Net 4.X. Setting to .Net Standard 2.0 may result
+in weird JSON issues at runtime on builds, see [this issue on our
+forums](https://github.com/buttplugio/buttplug-unity/issues/3) for more info.
 
 See the [Buttplug Unity example
 directory](https://github.com/buttplugio/buttplug-unity/tree/master/examples) as
