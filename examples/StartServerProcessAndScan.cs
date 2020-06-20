@@ -8,6 +8,7 @@
 // your scene and it'll run on scene load.
 using System;
 using System.IO;
+using System.Threading.Tasks;
 using System.Diagnostics;
 using UnityEngine;
 using Buttplug.Core.Logging;
@@ -28,7 +29,7 @@ public class NewBehaviourScript : MonoBehaviour
         // process spins up. This will change to using the Intiface Protobuf
         // system in the future.
         UnityEngine.Debug.Log(Application.streamingAssetsPath);
-        var processPath = Path.Combine(Application.streamingAssetsPath, "IntifaceCLI.exe");
+        var processPath = Path.Combine(Application.streamingAssetsPath, "Buttplug", "IntifaceCLI.exe");
         var processInfo = new ProcessStartInfo(processPath);
         processInfo.CreateNoWindow = true;
         processInfo.RedirectStandardOutput = true;
@@ -43,12 +44,12 @@ public class NewBehaviourScript : MonoBehaviour
     }
 
     async void OnServerStart(object sender, DataReceivedEventArgs e) {
+        serverProcess.OutputDataReceived -= OnServerStart;
         UnityEngine.Debug.Log("Got line, starting server");
         await StartClient();
-        serverProcess.OutputDataReceived -= OnServerStart;
     }
 
-    async void StartClient() {
+    async Task StartClient() {
         // We will probably handle client setup,
         var connector = new ButtplugWebsocketConnector(new Uri("ws://localhost:12345/buttplug"));
         client = new ButtplugClient("Example Client", connector);
