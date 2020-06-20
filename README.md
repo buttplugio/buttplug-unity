@@ -6,7 +6,7 @@
 [![Discord](https://img.shields.io/discord/353303527587708932.svg?logo=discord)](https://discord.buttplug.io)
 [![Twitter](https://img.shields.io/twitter/follow/buttplugio.svg?style=social&logo=twitter)](https://twitter.com/buttplugio)
 
-Unity Package for Buttplug support in Unity 2019.1+.
+Unity Package for Buttplug support in Unity 2018.2+.
 
 Only the following classes should be used:
 
@@ -34,7 +34,10 @@ connect out to ID somehow, though.
   - "Add Package from tarball" (if you downloaded the .tgz file).
   - **Please note that "Add Package from git repo" will not work, see FAQ for
     reasoning**.
-- Start using Buttplug classes in your scripts
+- If using Unity 2018, you will need to restart Unity in order for the
+  StreamingAssets additions to show up. Unity 2019 does not require
+  this.
+- Start using Buttplug classes in your scripts.
 
 ## Usage
 
@@ -54,6 +57,11 @@ Using Buttplug consists of the following steps:
 - Connecting to a server
 - Scanning for devices
 - Controlling devices
+
+For the first 3 of those steps, we provide helper methods in the
+[ButtplugUnityHelper](https://github.com/buttplugio/buttplug-unity/blob/master/package/Runtime/ButtplugUnityHelper.cs)
+file. See the comments in that file and the examples for usage
+documentation.
 
 In Buttplug C# (which Buttplug Unity is built on), most of these are async
 functions, as accessing both the network and the hardware are slow functions
@@ -124,3 +132,23 @@ Due to the large binaries required for the package, keeping Buttplug-Unity
 completely in a git repo would make the repo very large, very fast. Therefore we
 only keep text files in the repo, and bring in binaries as part of our build
 process.
+
+### Can I use Buttplug Unity in my commercial game?
+
+Yes, Buttplug Unity falls under the same BSD 3-Clause license as the
+rest of the library, meaning you just need a copyright acknowledgement
+in your game credits and license file. If you are interested in
+featuring our logos on your loading screen (which we appreciate!),
+please contact us on [Discord](https://discord.buttplug.io) or
+[Twitter](https://twitter.com/buttplugio) to discuss.
+
+### How can I get direct support from the Buttplug developers for my game?
+
+The Buttplug Developers are happy to consider paid support contracts.
+Please contact on [Discord](https://discord.buttplug.io) or
+[Twitter](https://twitter.com/buttplugio) to discuss.
+
+### I don't see my question here, what should I do?
+
+- File an issue on this repo
+- [Join the Discord Server](https://discord.buttplug.io) and ask there
