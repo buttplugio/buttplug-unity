@@ -1,3 +1,13 @@
+# 1.0.0 (2021-04-22)
+
+## Features
+
+- Move from using Buttplug C# to Buttplug Rust v3.x
+  - Buttplug C# is dead anyways.
+- Fix system to work with Mono and IL2CPP, support back to Unity 2018
+  - Unity 2018-2019 will have slight delays in IL2CPP connections due to Mono weirdness, but should
+    work fine otherwise.
+
 # 0.1.0 (2020-06-19)
 
 ## Features
