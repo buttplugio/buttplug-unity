@@ -9,8 +9,9 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
-using Buttplug.Client;
-using Buttplug.Client.Connectors.WebsocketConnector;
+using Buttplug;
+using System.Threading;
+using System.ComponentModel;
 
 namespace ButtplugUnity
 {
@@ -30,8 +31,10 @@ namespace ButtplugUnity
     private static bool outputDebugMessages = false;
 
     // Outputs a debug message to the console if outputDebugMessages is true.
-    private static void MaybeDebugLog(string msg) {
-      if (ButtplugUnityHelper.outputDebugMessages) {
+    private static void MaybeDebugLog(string msg)
+    {
+      if (ButtplugUnityHelper.outputDebugMessages)
+      {
         UnityEngine.Debug.Log(msg);
       }
     }
@@ -42,8 +45,12 @@ namespace ButtplugUnity
     //
     // Throws if server is already running, or if server process fails to start
     // up, or if client fails to connect for some reason.
-    public static async Task<ButtplugClient> StartProcessAndCreateClient(ButtplugUnityOptions options)
+    public static async Task StartProcessAndCreateClient(ButtplugUnityClient client, ButtplugUnityOptions options)
     {
+      if (options.OutputDebugMessages) {
+        outputDebugMessages = true;
+      }
+
       ButtplugUnityHelper.MaybeDebugLog("Bringing up Buttplug Server/Client");
       // If the server is already up, we can't start it again, but we also can't
       // hand back a client. Throw.
@@ -54,8 +61,9 @@ namespace ButtplugUnity
       }
 
       // If we aren't given a port to use, generate a random one.
-      var websocketPort = options.WebsocketInsecurePort;
-      if (websocketPort == 0) {
+      var websocketPort = options.WebsocketPort;
+      if (websocketPort == 0)
+      {
         var rand = new System.Random();
         websocketPort = (ushort)rand.Next(10000, 60000);
       }
@@ -68,44 +76,74 @@ namespace ButtplugUnity
       // system in the future.
       if (options.UseServerProcess)
       {
-
-        // Create a new task that will resolve when the server comes up.
-        ButtplugUnityHelper.serverBringupTask = new TaskCompletionSource<bool>();
-
         var processPath = Path.Combine(Application.streamingAssetsPath, "Buttplug", "IntifaceCLI.exe");
-        var serverProcess = new Process();
-        serverProcess.StartInfo.FileName = processPath;
-        // Don't open a window on starting, and make sure stdout is redirected
-        // so we can catch it for bringup status.
-        serverProcess.StartInfo.CreateNoWindow = true;
-        serverProcess.StartInfo.RedirectStandardOutput = true;
-        serverProcess.StartInfo.UseShellExecute = false;
-        serverProcess.StartInfo.Arguments = $"--wsinsecureport {websocketPort} --pingtime {options.ServerPingTime}";
-
-        ButtplugUnityHelper.MaybeDebugLog($"Starting task with arguments: {serverProcess.StartInfo.Arguments}");
-        serverProcess.Exited += ButtplugUnityHelper.OnServerExit;
-        serverProcess.OutputDataReceived += ButtplugUnityHelper.OnServerStart;
-
-        ButtplugUnityHelper.serverProcess = serverProcess;
-        serverProcess.Start();
-        serverProcess.BeginOutputReadLine();
-        ButtplugUnityHelper.MaybeDebugLog("Waiting for task output");
-        // Wait to get something from the process
-        await ButtplugUnityHelper.serverBringupTask.Task;
-        // Reset our bringup task to null now that the process is either up or dead.
-        ButtplugUnityHelper.serverBringupTask = null;
-        if (ButtplugUnityHelper.serverProcess == null)
+        var arguments = $"--wsinsecureport {websocketPort} --pingtime {options.ServerPingTime}";
+        try
         {
-          ButtplugUnityHelper.MaybeDebugLog("Process died before bringup finished.");
-          throw new ApplicationException("ButtplugUnityHelper: Intiface process exited or crashed while coming up.");
+          // Create a new task that will resolve when the server comes up.
+          ButtplugUnityHelper.serverBringupTask = new TaskCompletionSource<bool>();
+
+          var serverProcess = new Process();
+          serverProcess.StartInfo.FileName = processPath;
+          // Don't open a window on starting, and make sure stdout is redirected
+          // so we can catch it for bringup status.
+          serverProcess.StartInfo.CreateNoWindow = true;
+          serverProcess.StartInfo.RedirectStandardOutput = true;
+          serverProcess.StartInfo.UseShellExecute = false;
+          serverProcess.StartInfo.Arguments = arguments;
+
+          ButtplugUnityHelper.MaybeDebugLog($"Starting task with arguments: {serverProcess.StartInfo.Arguments}");
+          serverProcess.Exited += ButtplugUnityHelper.OnServerExit;
+          serverProcess.OutputDataReceived += ButtplugUnityHelper.OnServerStart;
+
+          ButtplugUnityHelper.serverProcess = serverProcess;
+          serverProcess.Start();
+          serverProcess.BeginOutputReadLine();
+          ButtplugUnityHelper.MaybeDebugLog("Waiting for task output");
+          // Wait to get something from the process
+          await ButtplugUnityHelper.serverBringupTask.Task;
+          ButtplugUnityHelper.MaybeDebugLog("Task output received, continuing");
+          // Reset our bringup task to null now that the process is either up or dead.
+          ButtplugUnityHelper.serverBringupTask = null;
+          if (ButtplugUnityHelper.serverProcess == null)
+          {
+            ButtplugUnityHelper.MaybeDebugLog("Process died before bringup finished.");
+            throw new ApplicationException("ButtplugUnityHelper: Intiface process exited or crashed while coming up.");
+          }
+        } catch (Win32Exception processException) {
+          ButtplugUnityHelper.MaybeDebugLog("Got process exception. If this is IL2CPP, this is expected and Ok. Printing exception and retrying using kernel32 P/Invoke methods.");
+          ButtplugUnityHelper.MaybeDebugLog(processException.ToString());
+          // This might be a IL2CPP issue, in which case, try to launch the process using those bindings.
+          //
+          // The option here is to hide the window, so we'll flip the context from our option.
+          StartExternalProcess.Start(processPath + " " + arguments, ".", !options.OpenIL2CPPConsoleWindow);
         }
       }
-
+      ButtplugUnityHelper.MaybeDebugLog("Creating client");
       // If we get here, either our task is live or we're connecting to an outside server interface like Intiface Desktop.
-      var connector = new ButtplugWebsocketConnector(new Uri($"ws://{options.WebsocketAddress}:{websocketPort}/buttplug"));
-      var client = new ButtplugClient(options.ClientName, connector);
-      await client.ConnectAsync();
-      return client;
+      var connector = new ButtplugWebsocketConnectorOptions(new Uri($"ws://{options.WebsocketAddress}:{websocketPort}/buttplug"));
+      ButtplugUnityHelper.MaybeDebugLog("Connecting client");
+      // For some reason, in Unity 2018/2019 IL2CPP, awaiting our connect call
+      // causes copies internally that end up dropping our sorter, meaning we'll
+      // never get our connection confirmation back. This work everywhere in
+      // Mono, and is fixed in IL2CPP in Unity 2020.
+      //
+      // Why am I doing this work for free.
+      //
+      // Logic tests for "202", meaning this should work back through 2018/2019,
+      // but will futureproof us until Unity 2030 (or until they change their
+      // major versioning scheme again).
+      if (Application.unityVersion.Contains("202"))
+      {
+        await client.ConnectAsync(connector);
+      }
+      else
+      {
+        client.ConnectAsync(connector);
+        await Task.Delay(3000);
+      }
+
+      ButtplugUnityHelper.MaybeDebugLog("Connected client");
     }
 
     private static void OnServerExit(object sender, EventArgs e)
@@ -143,7 +181,8 @@ namespace ButtplugUnity
     // and sets it to null.
     public static void StopServer(bool exited = false)
     {
-      if (ButtplugUnityHelper.serverProcess == null) {
+      if (ButtplugUnityHelper.serverProcess == null)
+      {
         return;
       }
       // Remove the exit event handler before killing the process, otherwise the

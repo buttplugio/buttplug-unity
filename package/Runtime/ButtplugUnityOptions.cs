@@ -31,10 +31,16 @@ namespace ButtplugUnity {
     // Port that the client should try to connect to. 0 implies that we're
     // running a server process internally (i.e. UseServerProcess is true), in
     // which case we'll just choose a random high number port.
-    public ushort WebsocketInsecurePort = 0;
+    public ushort WebsocketPort = 0;
 
     // If true, this will cause ButtplugUnity's convenience functions to log to
     // the Unity console. Handy when things are going wrong.
     public bool OutputDebugMessages = false;
+
+    // If true, will open a console window for the IntifaceCLI process when
+    // using IL2CPP builds. This allows developers to see log messages being
+    // output by the console program, since we don't have a way to print them
+    // into the Unity log currently.
+    public bool OpenIL2CPPConsoleWindow = false;
   }
 }
