@@ -1,3 +1,17 @@
+# 2.0.0 (2021-04-24)
+
+## Features
+
+- Allow choice of connector type: Internal/External Process or Embedded
+- Allow using Raw Messages
+
+## Bugfixes
+
+- Update to Buttplug C# v2.0.1
+  - Fixes issue with RawWriteCmd JSON Schema
+  - Sorter now throws ButtplugConnectorException in live tasks on shutdown, similar to having a
+    connector disconnect.
+
 # 1.0.0 (2021-04-22)
 
 ## Features
