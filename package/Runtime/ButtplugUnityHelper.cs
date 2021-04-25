@@ -47,9 +47,12 @@ namespace ButtplugUnity
     // up, or if client fails to connect for some reason.
     public static async Task StartProcessAndCreateClient(ButtplugUnityClient client, ButtplugUnityOptions options)
     {
-      if (options.OutputDebugMessages) {
+      if (options.OutputDebugMessages)
+      {
         outputDebugMessages = true;
       }
+
+      ButtplugUnityHelper.MaybeDebugLog($"Using connection type {options.ConnectorType}.");
 
       ButtplugUnityHelper.MaybeDebugLog("Bringing up Buttplug Server/Client");
       // If the server is already up, we can't start it again, but we also can't
@@ -60,24 +63,29 @@ namespace ButtplugUnity
         throw new InvalidOperationException("Server already running.");
       }
 
-      // If we aren't given a port to use, generate a random one.
       var websocketPort = options.WebsocketPort;
-      if (websocketPort == 0)
-      {
-        var rand = new System.Random();
-        websocketPort = (ushort)rand.Next(10000, 60000);
-      }
-      ButtplugUnityHelper.MaybeDebugLog($"Setting websocket port to {websocketPort}");
 
       // We want to start the CLI process without a window, and capture output
       // from stdout at the moment just to see if it's alive. Crude, but it
       // does the job of making sure we don't try to connect before the
       // process spins up. This will change to using the Intiface Protobuf
       // system in the future.
-      if (options.UseServerProcess)
+      if (options.ConnectorType == ButtplugUnityConnectorType.WebsocketServerProcess)
       {
+        // If we aren't given a port to use, generate a random one.
+        if (websocketPort == 0)
+        {
+          var rand = new System.Random();
+          websocketPort = (ushort)rand.Next(10000, 60000);
+        }
+        ButtplugUnityHelper.MaybeDebugLog($"Setting websocket port to {websocketPort}");
+
         var processPath = Path.Combine(Application.streamingAssetsPath, "Buttplug", "IntifaceCLI.exe");
         var arguments = $"--wsinsecureport {websocketPort} --pingtime {options.ServerPingTime}";
+        if (options.AllowRawMessages)
+        {
+          arguments += " --allowraw";
+        }
         try
         {
           // Create a new task that will resolve when the server comes up.
@@ -110,7 +118,9 @@ namespace ButtplugUnity
             ButtplugUnityHelper.MaybeDebugLog("Process died before bringup finished.");
             throw new ApplicationException("ButtplugUnityHelper: Intiface process exited or crashed while coming up.");
           }
-        } catch (Win32Exception processException) {
+        }
+        catch (Win32Exception processException)
+        {
           ButtplugUnityHelper.MaybeDebugLog("Got process exception. If this is IL2CPP, this is expected and Ok. Printing exception and retrying using kernel32 P/Invoke methods.");
           ButtplugUnityHelper.MaybeDebugLog(processException.ToString());
           // This might be a IL2CPP issue, in which case, try to launch the process using those bindings.
@@ -119,10 +129,7 @@ namespace ButtplugUnity
           StartExternalProcess.Start(processPath + " " + arguments, ".", !options.OpenIL2CPPConsoleWindow);
         }
       }
-      ButtplugUnityHelper.MaybeDebugLog("Creating client");
-      // If we get here, either our task is live or we're connecting to an outside server interface like Intiface Desktop.
-      var connector = new ButtplugWebsocketConnectorOptions(new Uri($"ws://{options.WebsocketAddress}:{websocketPort}/buttplug"));
-      ButtplugUnityHelper.MaybeDebugLog("Connecting client");
+
       // For some reason, in Unity 2018/2019 IL2CPP, awaiting our connect call
       // causes copies internally that end up dropping our sorter, meaning we'll
       // never get our connection confirmation back. This work everywhere in
@@ -133,16 +140,36 @@ namespace ButtplugUnity
       // Logic tests for "202", meaning this should work back through 2018/2019,
       // but will futureproof us until Unity 2030 (or until they change their
       // major versioning scheme again).
-      if (Application.unityVersion.Contains("202"))
+
+      ButtplugUnityHelper.MaybeDebugLog("Connecting client");
+      if (options.ConnectorType == ButtplugUnityConnectorType.ExternalWebsocketServer || options.ConnectorType == ButtplugUnityConnectorType.WebsocketServerProcess)
       {
-        await client.ConnectAsync(connector);
+        var connector_options = new ButtplugWebsocketConnectorOptions(new Uri($"ws://{options.WebsocketAddress}:{websocketPort}/buttplug"));
+        if (Application.unityVersion.Contains("202"))
+        {
+          await client.ConnectAsync(connector_options);
+        }
+        else
+        {
+          client.ConnectAsync(connector_options);
+          await Task.Delay(3000);
+        }
       }
       else
       {
-        client.ConnectAsync(connector);
-        await Task.Delay(3000);
+        var connector_options = new ButtplugEmbeddedConnectorOptions();
+        connector_options.AllowRawMessages = options.AllowRawMessages;
+        connector_options.MaxPingTime = options.ServerPingTime;
+        if (Application.unityVersion.Contains("202"))
+        {
+          await client.ConnectAsync(connector_options);
+        }
+        else
+        {
+          client.ConnectAsync(connector_options);
+          await Task.Delay(3000);
+        }
       }
-
       ButtplugUnityHelper.MaybeDebugLog("Connected client");
     }
 
