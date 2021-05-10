@@ -43,9 +43,7 @@ You can also manually download and install the ButtplugUnity package, but you'll
 - Download the [Latest Buttplug Unity Package](https://package-installer.glitch.me/v1/installer/OpenUPM/com.nonpolynomial.buttplug-unity?registry=https%3A%2F%2Fpackage.openupm.com)
 - In Unity, use `Assets > Import Package > Custom Package...`
 - Open the downloaded package.
-
-And finally, if those don't work or you don't want to install git, you can manually copy `Packages/CoreUtils` folder into your own `<Project>/Packages/` folder.
-
+- Select `Import`
 
 ## Usage
 
