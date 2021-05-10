@@ -13,17 +13,39 @@ connect out to ID somehow, though.
 
 ## Installation
 
-- [Download latest zip or tgz from releases section](https://github.com/buttplugio/buttplug-unity/releases)
-- In the Unity Project Window, go to *Window* > *Package Manager* and hit the
-  "+" button. Choose either:
-  - "Add Package from Disk" (if you downloaded and unzip'd the zip file), then
-    choose the package.json file from buttplug-unity.
-  - "Add Package from tarball" (if you downloaded the .tgz file).
-  - **Please note that "Add Package from git repo" will not work, see FAQ for
-    reasoning**.
-- If using Unity 2018, you will need to restart Unity in order for the StreamingAssets additions to
-  show up. Unity >= 2019 does not require this.
-- Start using Buttplug classes in your scripts.
+### Option #1: OpenUPM CLI
+
+If you have the [OpenUPM command line interface](https://openupm.com/docs/getting-started.html#installing-openupm-cli) installed, then this is the fastest way to add the package to your project:
+
+- Open your Unity project folder in a terminal like CMD or PowerShell
+- Run `openupm add com.nonpolynomial.buttplug-unity`
+
+### Option #2: Edit Package Manager
+
+You can also manually perform the steps of the OpenUPM CLI (works in Unity 2019+):
+
+- Go to `Edit > Project Settings > Package manager`
+- Click the `+` button in the registry list
+- Name it `OpenUPM`
+- Set the URL to `https://package.openupm.com`
+- Click the `+` button in the scope list
+- Add `com.nonpolynomial.buttplug-unity`
+- Close the Project Settings window
+- Open `Window > Package Manager`
+- Use the drop down in the upper left to select `My Registeries`
+- Select the `ButtplugUnity` package
+- Click `Install`
+
+### Option #3: Manual Install of ButtplugUnity Package
+
+You can also manually download and install the ButtplugUnity package, but you'll need to check in all the package files into your project and you will need to manually remove and re-import the package when you want to update the Buttplug Unity package version.
+
+- Download the [Latest Buttplug Unity Package](https://package-installer.glitch.me/v1/installer/OpenUPM/com.nonpolynomial.buttplug-unity?registry=https%3A%2F%2Fpackage.openupm.com)
+- In Unity, use `Assets > Import Package > Custom Package...`
+- Open the downloaded package.
+
+And finally, if those don't work or you don't want to install git, you can manually copy `Packages/CoreUtils` folder into your own `<Project>/Packages/` folder.
+
 
 ## Usage
 
