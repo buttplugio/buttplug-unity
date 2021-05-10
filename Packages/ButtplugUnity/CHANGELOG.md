@@ -1,3 +1,11 @@
+# 2.1.0 (2021-05-10)
+
+## Features
+
+- Add in binary files
+- Reorganize files to support full Unity-compatible example project
+- Improve example C# script with intensity slider and connected device list in Inspector
+
 # 2.0.0 (2021-04-24)
 
 ## Features
