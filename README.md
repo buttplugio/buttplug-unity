@@ -82,12 +82,6 @@ assure games that as much of the fuckery as possible stays on the Buttplug side.
 
 Yes.
 
-### Why can't I add the package from a git repo?
-
-Due to the large binaries required for the package, keeping Buttplug-Unity completely in a git repo
-would make the repo very large, very fast. Therefore we only keep text files in the repo, and bring
-in binaries as part of our build process.
-
 ### Can I use Buttplug Unity in my commercial game?
 
 Yes, Buttplug Unity falls under the same BSD 3-Clause license as the rest of the library, meaning
