@@ -49,9 +49,11 @@ You can also manually download and install the ButtplugUnity package, but you'll
 ## Usage
 
 See the [Buttplug Unity example
-directory](https://github.com/buttplugio/buttplug-unity/tree/master/examples) as
+directory](https://github.com/buttplugio/buttplug-unity/tree/master/Assets/Example) as
 well as the [Buttplug Developer Guide](https://buttplug-developer-guide.docs.buttplug.io)
 for code and usage advice.
+
+Note that this repo is a complete Unity project that can be opened and run in Unity.
 
 Using Buttplug consists of the following steps:
 
@@ -61,7 +63,7 @@ Using Buttplug consists of the following steps:
 - Controlling devices
 
 For the first 3 of those steps, we provide helper methods in the
-[ButtplugUnityHelper](https://github.com/buttplugio/buttplug-unity/blob/master/package/Runtime/ButtplugUnityHelper.cs)
+[ButtplugUnityHelper](https://github.com/buttplugio/buttplug-unity/blob/master/Packages/ButtplugUnity/Runtime/ButtplugUnityHelper.cs)
 file. See the comments in that file and the examples for usage
 documentation.
 
