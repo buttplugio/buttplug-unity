@@ -52,6 +52,14 @@ re-import the package when you want to update the Buttplug Unity package version
 - Open the downloaded package.
 - Click `Import`
 
+### Options #4: Clone This Project
+
+This is a fully functional Unity project that you can clone as your own.
+
+- Clone `https://github.com/buttplugio/buttplug-unity` with your favorite Git client
+- Open root of the cloned project folder in Unity 2019.
+- Open the `Example/Example.unity` scene file to run the example script.
+
 ## Usage
 
 See the [Buttplug Unity example
