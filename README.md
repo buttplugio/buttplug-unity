@@ -1,5 +1,6 @@
 # Buttplug Unity
 
+[![openupm](https://img.shields.io/npm/v/com.nonpolynomial.buttplug-unity?label=openupm&registry_uri=https://package.openupm.com)](https://openupm.com/packages/com.nonpolynomial.buttplug-unity/)
 [![Patreon donate button](https://img.shields.io/badge/patreon-donate-yellow.svg)](https://www.patreon.com/qdot)
 [![Github sponsor button](https://img.shields.io/static/v1?label=Sponsor&message=%E2%9D%A4&logo=GitHub)](https://github.com/sponsors/qdot)
 [![Discord](https://img.shields.io/discord/353303527587708932.svg?logo=discord)](https://discord.buttplug.io)
