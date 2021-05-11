@@ -22,8 +22,18 @@ installed, then this is the fastest way to add the package to your project:
 - Open your Unity project folder in a terminal like CMD or PowerShell
 - Run `openupm add com.nonpolynomial.buttplug-unity`
 
-### Option #2: Edit Package Manager
-If you don't have OpenUPM's CLI installed, you can manually perform the same steps in Unity 2019+.
+### Option #2: Use OpenUPM's Installer Package
+
+You can download and import the ButtplugUnity installer package which sets up the package reference and then removes itself.
+
+- Download the [Latest Buttplug Unity Installer Package](https://package-installer.glitch.me/v1/installer/OpenUPM/com.nonpolynomial.buttplug-unity?registry=https%3A%2F%2Fpackage.openupm.com)
+- In Unity, use `Assets > Import Package > Custom Package...`
+- Open the downloaded package.
+- Click `Import`
+
+### Option #3: Edit Package Manager
+
+You can also manually perform the setup steps in Unity 2019+.
 
 Add the OpenUPM registry and Buttplug Unity's scope to Project Settings:
 ![image](https://user-images.githubusercontent.com/33731102/117752226-86a26800-b26a-11eb-998b-6e038eb19fe4.png)
@@ -41,20 +51,10 @@ Add the Buttplug Unity package in the Package Manager:
 - Select the `ButtplugUnity` package
 - Click `Install`
 
-### Option #3: Manual Install of ButtplugUnity Package
-
-You can also manually download and install the ButtplugUnity package, but you'll need to
-check in all the package files into your project and you will need to manually remove and
-re-import the package when you want to update the Buttplug Unity package version.
-
-- Download the [Latest Buttplug Unity Package](https://package-installer.glitch.me/v1/installer/OpenUPM/com.nonpolynomial.buttplug-unity?registry=https%3A%2F%2Fpackage.openupm.com)
-- In Unity, use `Assets > Import Package > Custom Package...`
-- Open the downloaded package.
-- Click `Import`
-
 ### Options #4: Clone This Project
 
-This is a fully functional Unity project that you can clone as your own.
+This is a fully functional Unity project that you can clone as your own. This will mean you have the Buttplug Unity package files locally,
+so you'll need to manually update the package or pull latest from this project as updates are made.
 
 - Clone `https://github.com/buttplugio/buttplug-unity` with your favorite Git client
 - Open root of the cloned project folder in Unity 2019.
