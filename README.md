@@ -23,18 +23,19 @@ installed, then this is the fastest way to add the package to your project:
 - Run `openupm add com.nonpolynomial.buttplug-unity`
 
 ### Option #2: Edit Package Manager
-![image](https://user-images.githubusercontent.com/33731102/117750180-19410800-b267-11eb-871a-3693a52196c4.png)
-![image](https://user-images.githubusercontent.com/33731102/117750921-5b1e7e00-b268-11eb-80eb-0746c0cdf798.png)
+If you don't have OpenUPM's CLI installed, you can manually perform the same steps in Unity 2019+.
 
-You can also manually perform the steps of the OpenUPM CLI in Unity 2019+:
-
+Add the OpenUPM registry and Buttplug Unity's scope to Project Settings:
+![image](https://user-images.githubusercontent.com/33731102/117752226-86a26800-b26a-11eb-998b-6e038eb19fe4.png)
 - Go to `Edit > Project Settings > Package manager`
 - Click the `+` button in the registry list
 - Name it `OpenUPM`
 - Set the URL to `https://package.openupm.com`
-- Click the `+` button in the scope list
-- Add `com.nonpolynomial.buttplug-unity`
+- Add `com.nonpolynomial.buttplug-unity` as the Scope
 - Click `Apply`
+
+Add the Buttplug Unity package in the Package Manager:
+![image](https://user-images.githubusercontent.com/33731102/117750921-5b1e7e00-b268-11eb-80eb-0746c0cdf798.png)
 - Close the Project Settings window
 - Go to `Window > Package Manager`
 - Use the drop down in the upper left to select `My Registeries`
