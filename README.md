@@ -16,14 +16,17 @@ connect out to ID somehow, though.
 
 ### Option #1: OpenUPM CLI
 
-If you have the [OpenUPM command line interface](https://openupm.com/docs/getting-started.html#installing-openupm-cli) installed, then this is the fastest way to add the package to your project:
+If you have the [OpenUPM command line interface](https://openupm.com/docs/getting-started.html#installing-openupm-cli)
+installed, then this is the fastest way to add the package to your project:
 
 - Open your Unity project folder in a terminal like CMD or PowerShell
 - Run `openupm add com.nonpolynomial.buttplug-unity`
 
 ### Option #2: Edit Package Manager
+![image](https://user-images.githubusercontent.com/33731102/117750180-19410800-b267-11eb-871a-3693a52196c4.png)
+![image](https://user-images.githubusercontent.com/33731102/117750921-5b1e7e00-b268-11eb-80eb-0746c0cdf798.png)
 
-You can also manually perform the steps of the OpenUPM CLI (works in Unity 2019+):
+You can also manually perform the steps of the OpenUPM CLI in Unity 2019+:
 
 - Go to `Edit > Project Settings > Package manager`
 - Click the `+` button in the registry list
@@ -31,20 +34,23 @@ You can also manually perform the steps of the OpenUPM CLI (works in Unity 2019+
 - Set the URL to `https://package.openupm.com`
 - Click the `+` button in the scope list
 - Add `com.nonpolynomial.buttplug-unity`
+- Click `Apply`
 - Close the Project Settings window
-- Open `Window > Package Manager`
+- Go to `Window > Package Manager`
 - Use the drop down in the upper left to select `My Registeries`
 - Select the `ButtplugUnity` package
 - Click `Install`
 
 ### Option #3: Manual Install of ButtplugUnity Package
 
-You can also manually download and install the ButtplugUnity package, but you'll need to check in all the package files into your project and you will need to manually remove and re-import the package when you want to update the Buttplug Unity package version.
+You can also manually download and install the ButtplugUnity package, but you'll need to
+check in all the package files into your project and you will need to manually remove and
+re-import the package when you want to update the Buttplug Unity package version.
 
 - Download the [Latest Buttplug Unity Package](https://package-installer.glitch.me/v1/installer/OpenUPM/com.nonpolynomial.buttplug-unity?registry=https%3A%2F%2Fpackage.openupm.com)
 - In Unity, use `Assets > Import Package > Custom Package...`
 - Open the downloaded package.
-- Select `Import`
+- Click `Import`
 
 ## Usage
 
