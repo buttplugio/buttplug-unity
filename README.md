@@ -31,12 +31,11 @@ Add the OpenUPM registry and Buttplug Unity's scope to Project Settings:
 - Click the `+` button in the registry list
 - Name it `OpenUPM`
 - Set the URL to `https://package.openupm.com`
-- Add `com.nonpolynomial.buttplug-unity` as the Scope
+- Set the Scope to `com.nonpolynomial.buttplug-unity`
 - Click `Apply`
 
 Add the Buttplug Unity package in the Package Manager:
 ![image](https://user-images.githubusercontent.com/33731102/117750921-5b1e7e00-b268-11eb-80eb-0746c0cdf798.png)
-- Close the Project Settings window
 - Go to `Window > Package Manager`
 - Use the drop down in the upper left to select `My Registeries`
 - Select the `ButtplugUnity` package
