@@ -6,40 +6,32 @@
 
 using System;
 using System.Collections.Generic;
-using Buttplug;
-using ButtplugUnity;
+using Buttplug.Client;
+using Buttplug.Client.Connectors.WebsocketConnector;
 using UnityEngine;
 
 public class StartServerProcessAndScan : MonoBehaviour
 {
     [SerializeField, Range(0, 1)] private float intensity = 0.5f;
 
-    private ButtplugUnityClient client;
+    private ButtplugClient client;
 
     public List<ButtplugClientDevice> Devices { get; } = new List<ButtplugClientDevice>();
 
     private async void Start()
     {
-        client = new ButtplugUnityClient("Test Client");
+        client = new ButtplugClient("Test Client");
         Log("Trying to create client");
 
         // Set up client event handlers before we connect.
         client.DeviceAdded += AddDevice;
         client.DeviceRemoved += RemoveDevice;
         client.ScanningFinished += ScanFinished;
-
-        // Try to create the client.
-        try {
-            await ButtplugUnityHelper.StartProcessAndCreateClient(client, new ButtplugUnityOptions {
-                // Since this is an example, we'll have the unity class output everything its doing to the logs.
-                OutputDebugMessages = true,
-            });
-        }
-        catch (ApplicationException e) {
-            Log("Got an error while starting client");
-            Log(e);
-            return;
-        }
+        // Creating a Websocket Connector is as easy as using the right
+        // options object.
+        var connector = new ButtplugWebsocketConnector(
+            new Uri("ws://localhost:12345/buttplug"));
+        await client.ConnectAsync(connector);
 
         await client.StartScanningAsync();
     }
@@ -60,7 +52,6 @@ public class StartServerProcessAndScan : MonoBehaviour
             client = null;
         }
 
-        ButtplugUnityHelper.StopServer();
         Log("I am destroyed now");
     }
 
@@ -73,7 +64,7 @@ public class StartServerProcessAndScan : MonoBehaviour
     {
         foreach (ButtplugClientDevice device in Devices)
         {
-            device.SendVibrateCmd(intensity);
+            device.VibrateAsync(intensity);
         }
     }
 
