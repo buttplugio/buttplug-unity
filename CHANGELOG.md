@@ -1,16 +1,25 @@
-# v2.1.1 (2020-05-14)
+# v3 (2023-01-23)
+
+## Features
+
+- Update to Buttplug C# v3
+- Remove executable distribution
+- Basically make this a copy of the nuget package
+- Probably piss off devs but it's either do that or just drop this project completely
+
+# v2.1.1 (2021-05-14)
 
 ## Features
 
 - Update to Buttplug C# v2.0.2, fixes some crashes relating to the logging system
 
-# v2.1.0 (2020-05-10)
+# v2.1.0 (2021-05-10)
 
 ## Features
 
 - Update repo for OpenUPM support
 
-# v2.0.0 (2020-04-24)
+# v2.0.0 (2021-04-24)
 
 ## Features
 
