@@ -8,9 +8,11 @@
 
 Unity Package for Buttplug support in Unity 2018.2+.
 
-Buttplug Unity contains a Intiface CLI executable, so Intiface Desktop
-is not required. It is still recommended that you allow users to
-connect out to ID somehow, though.
+Buttplug Unity is basically a repackage of the [Buttplug C# Libraries](https://github.com/buttplugio/buttplug-csharp) for Unity. 
+
+Unlike older versions. Buttplug Unity v3 and later **DO NOT CONTAIN ANY EXECUTABLES OR WAYS TO ACCESS HARDWARE**. It is assumed that users will have [Intiface Central](https://intiface.com/central) installed.
+
+It is highly recommended that developers check out the [Buttplug Developer Guide](https://docs.buttplug.io/docs/dev-guide) for more info on Buttplug architecture and usage before delving into using this package with their Unity project.
 
 ## Installation
 
@@ -64,7 +66,7 @@ so you'll need to manually update the package or pull latest from this project a
 
 See the [Buttplug Unity example
 directory](https://github.com/buttplugio/buttplug-unity/tree/master/Assets/Example) as
-well as the [Buttplug Developer Guide](https://buttplug-developer-guide.docs.buttplug.io)
+well as the [Buttplug Developer Guide](https://docs.buttplug.io/docs/dev-guide)
 for code and usage advice.
 
 Note that this repo is a complete Unity project that can be opened and run in Unity.
@@ -76,16 +78,10 @@ Using Buttplug consists of the following steps:
 - Scanning for devices
 - Controlling devices
 
-For the first 3 of those steps, we provide helper methods in the
-[ButtplugUnityHelper](https://github.com/buttplugio/buttplug-unity/blob/master/Packages/ButtplugUnity/Runtime/ButtplugUnityHelper.cs)
-file. See the comments in that file and the examples for usage
-documentation.
-
 In Buttplug C# (which Buttplug Unity is built on), most of these are async
 functions, as accessing both the network and the hardware are slow functions
 that can block. We highly recommend executing tasks on background thread pools,
-as not to interrupt game actions. More examples related to this will be released
-soon.
+as not to interrupt game actions.
 
 ## FAQ
 
@@ -94,26 +90,16 @@ soon.
 An up-to-date list is kept at [IOSTIndex, using the Buttplug C#
 filter](https://iostindex.com/?filtersChanged=1&filter0Availability=Available,DIY&filter1ButtplugSupport=4).
 
-### How does the Buttplug Unity package change my Unity project?
+### Why do I have to run Intiface Central alongside my game?
 
-When the Buttplug Unity package is loaded, it checks to see whether a [StreamingAssets
-directory](https://docs.unity3d.com/Manual/StreamingAssets.html) already exists. If not, it creates
-the directory, and under that, creates a Buttplug directory, to which it copies the Intiface CLI
-executable. This allows us to make sure that Unity packages the executable with your game.
+[Intiface Central](https://intiface.com/central) is a cross platform application for running Buttplug servers and managing updates. Buttplug (the library) and Intiface (the official application layer on top of Buttplug) change frequently and allow for deep user configuration. Intiface Central manages those updates and configuration, meaning game devs only need to worry about connecting to Central and controlling devices.
 
-As of 1.0.0, in order to make usage as work-free as possible, this functionality is automatic and
-there is no way to turn it off. If this affects your project in adverse ways, or if you would like
-to have the option to only use [Intiface Desktop](https://intiface.com/desktop) versus handling the
-binary yourself, please file an issue (or if one is already filed, add a +1 comment), and we'll try
-to figure out another way to do this.
-
-### Why do I have to run an outside process alongside my game?
-
-By hosting hardware access externally, we minimize the impact of errors and crashes on the game
-process. While we certainly do our best to avoid errors, dealing with hardware can sometimes be a
-dynamic and challenging situation, where an extended period of normal usage can be suddenly
-interrupted by shit going absolutely fucked. By keeping process separation as a boundary, we can
-assure games that as much of the fuckery as possible stays on the Buttplug side.
+Why not run hardware access inside the game process? By hosting hardware access externally, we
+minimize the impact of errors and crashes on the game process. While we certainly do our best to
+avoid errors, dealing with hardware can sometimes be a dynamic and challenging situation, where an
+extended period of normal usage can be suddenly interrupted by shit going absolutely fucked. By
+keeping process separation as a boundary, we can assure games that as much of the fuckery as
+possible stays on the Buttplug side.
 
 ### Does Buttplug Unity work with IL2CPP?
 
@@ -134,4 +120,5 @@ The Buttplug Developers are happy to consider paid support contracts. Please con
 ### I don't see my question here, what should I do?
 
 - File an issue on this repo
+- [Check our forums](https://discuss.buttplug.io)
 - [Join the Discord Server](https://discord.buttplug.io) and ask there
