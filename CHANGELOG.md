@@ -1,11 +1,16 @@
-# v3 (2023-01-23)
+# 3.0.0 (2023-02-05)
+
+## Breaking Changes
+
+- Remove IntifaceCLI executable, expect that users will now connect to Intiface Central.
 
 ## Features
 
-- Update to Buttplug C# v3
-- Remove executable distribution
-- Basically make this a copy of the nuget package
-- Probably piss off devs but it's either do that or just drop this project completely
+- Update to Buttplug C# v3.0
+  - Returns to working with pure native C# libraries, no more architecture-specific Rust FFI
+    required.
+  - Basically make this a copy of the nuget package
+  - Probably piss off devs but it's either do that or just drop this project completely
 
 # v2.1.1 (2021-05-14)
 
