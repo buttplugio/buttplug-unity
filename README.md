@@ -114,8 +114,9 @@ on [Discord](https://discord.buttplug.io) or [Twitter](https://twitter.com/buttp
 
 ### How can I get direct support from the Buttplug developers for my game?
 
-The Buttplug Developers are happy to consider paid support contracts. Please contact on
-[Discord](https://discord.buttplug.io) or [Twitter](https://twitter.com/buttplugio) to discuss.
+The Buttplug Developers are happy to consider paid support contracts. Please contact us on
+[Discourse](https://discuss.buttplug.io), [Discord](https://discord.buttplug.io) or
+[Twitter](https://twitter.com/buttplugio) to discuss.
 
 ### I don't see my question here, what should I do?
 
