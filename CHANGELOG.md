@@ -1,3 +1,13 @@
+# 3.0.1 (2023-06-18)
+
+## Features
+
+- Update to C# v3.0.1, mostly bug fixes
+
+## Bugfixes
+
+- Add package dependencies that were missing for running on Unity < 2020
+
 # 3.0.0 (2023-02-05)
 
 ## Breaking Changes
