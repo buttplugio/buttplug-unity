@@ -1,3 +1,12 @@
+# 3.0.1 (2024-05-18)
+
+## Bugfixes
+
+- Update to Buttplug C# v3.0.1
+  - DLLs from .Net Standard 2.0 build, but work with .Net 4.7
+  - Fixes memory leak issue
+  - Removes dependency for DataFlow DLL
+
 # 3.0.0 (2023-02-05)
 
 ## Breaking Changes
