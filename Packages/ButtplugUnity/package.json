@@ -5,8 +5,8 @@
     "email" : "kyle@nonpolynomial.com",
     "url" : "https://buttplug.io/"
   },
-  "version": "3.0.1",
+  "version": "3.0.2",
   "displayName": "Buttplug Unity",
   "description": "Buttplug Sex Toy Control Library support for Unity. For more info, see https://buttplug.io.",
-  "unity": "2018.2"
+  "unity": "2019.4"
 }

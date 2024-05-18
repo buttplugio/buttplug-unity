@@ -6,9 +6,11 @@
 [![Discord](https://img.shields.io/discord/353303527587708932.svg?logo=discord)](https://discord.buttplug.io)
 [![Twitter](https://img.shields.io/twitter/follow/buttplugio.svg?style=social&logo=twitter)](https://twitter.com/buttplugio)
 
-Unity Package for Buttplug support in Unity 2018.2+.
+Unity Package for Buttplug support in Unity 2019.4+.
 
-Buttplug Unity is basically a repackage of the [Buttplug C# Libraries](https://github.com/buttplugio/buttplug-csharp) for Unity. 
+**NOTE:** This package *may* work as far back as Unity 2018.2, but for anything before Unity 2019.4, you may need to provide your own Newtonsoft.Json.dll package. We now rely on the built-in library from unity by default.
+
+Buttplug Unity is a repackage of the [Buttplug C# Libraries](https://github.com/buttplugio/buttplug-csharp) for Unity. 
 
 Unlike older versions. Buttplug Unity v3 and later **DO NOT CONTAIN ANY EXECUTABLES OR WAYS TO ACCESS HARDWARE**. It is assumed that users will have [Intiface Central](https://intiface.com/central) installed.
 
@@ -150,7 +152,7 @@ This project is BSD 3-Clause licensed.
 
 ```text
 
-Copyright (c) 2016-2023, Nonpolynomial, LLC
+Copyright (c) 2016-2024, Nonpolynomial, LLC
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without

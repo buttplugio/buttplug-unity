@@ -1,3 +1,10 @@
+# 3.0.2 (2024-05-18)
+
+## Bugfixes
+
+- Remove Newtonsoft.Json.dll
+  - Move to using unity's version, which should stop conflicts
+
 # 3.0.1 (2024-05-18)
 
 ## Bugfixes
