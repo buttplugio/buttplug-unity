@@ -7,7 +7,6 @@
 using System;
 using System.Collections.Generic;
 using Buttplug.Client;
-using Buttplug.Client.Connectors.WebsocketConnector;
 using UnityEngine;
 
 public class StartServerProcessAndScan : MonoBehaviour
@@ -18,7 +17,7 @@ public class StartServerProcessAndScan : MonoBehaviour
 
     public List<ButtplugClientDevice> Devices { get; } = new List<ButtplugClientDevice>();
 
-    private async void Start()
+    public async void Start()
     {
         client = new ButtplugClient("Test Client");
         Log("Trying to create client");
