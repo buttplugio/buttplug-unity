@@ -61,7 +61,7 @@ This is a fully functional Unity project that you can clone as your own. This wi
 so you'll need to manually update the package or pull latest from this project as updates are made.
 
 - Clone `https://github.com/buttplugio/buttplug-unity` with your favorite Git client
-- Open root of the cloned project folder in Unity 2019.
+- Open root of the cloned project folder in Unity >= 2019.
 - Open the `Example/Example.unity` scene file to run the example script.
 
 ## Usage
