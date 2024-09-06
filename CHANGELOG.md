@@ -1,4 +1,4 @@
-# 3.1.0 (2024-09-05)
+# 4.0.0 (2024-09-05)
 
 ## Breaking Changes
 
@@ -8,20 +8,26 @@
 
 ## Features
 
-- Update to Buttplug C# v3.1.0
+- Update to Buttplug C# v4.0.0
   - Moves websockets to Buttplug.Client module
   - Removes extra dependencies for Websockets
   - Removes uses of System.ValueTuple
 
-# 3.0.1 (2023-06-18)
-
-## Features
-
-- Update to C# v3.0.1, mostly bug fixes
+# 3.0.2 (2024-05-18)
 
 ## Bugfixes
 
-- Add package dependencies that were missing for running on Unity < 2020
+- Remove Newtonsoft.Json.dll
+  - Move to using unity's version, which should stop conflicts
+
+# 3.0.1 (2024-05-18)
+
+## Bugfixes
+
+- Update to Buttplug C# v3.0.1
+  - DLLs from .Net Standard 2.0 build, but work with .Net 4.7
+  - Fixes memory leak issue
+  - Removes dependency for DataFlow DLL
 
 # 3.0.0 (2023-02-05)
 
@@ -43,28 +49,51 @@
 
 - Update to Buttplug C# v2.0.2, fixes some crashes relating to the logging system
 
-# v2.1.0 (2021-05-10)
+# 2.1.0 (2021-05-10)
 
 ## Features
 
-- Update repo for OpenUPM support
+- Add in binary files
+- Reorganize files to support full Unity-compatible example project
+- Improve example C# script with intensity slider and connected device list in Inspector
 
-# v2.0.0 (2021-04-24)
-
-## Features
-
-- Add support for raw commands
-- Add support for connector type selection
-
-# v1.0.0 (2020-04-22)
+# 2.0.0 (2021-04-24)
 
 ## Features
 
-- Update to Buttplug C# v1
+- Allow choice of connector type: Internal/External Process or Embedded
+- Allow using Raw Messages
 
-# v0.0.1 (2020-06-18)
+## Bugfixes
+
+- Update to Buttplug C# v2.0.1
+  - Fixes issue with RawWriteCmd JSON Schema
+  - Sorter now throws ButtplugConnectorException in live tasks on shutdown, similar to having a
+    connector disconnect.
+
+# 1.0.0 (2021-04-22)
 
 ## Features
 
-- Initial release, built on Buttplug C# 0.5.9
-- Simple shim between Unity and Buttplug C#
+- Move from using Buttplug C# to Buttplug Rust v3.x
+  - Buttplug C# is dead anyways.
+- Fix system to work with Mono and IL2CPP, support back to Unity 2018
+  - Unity 2018-2019 will have slight delays in IL2CPP connections due to Mono weirdness, but should
+    work fine otherwise.
+
+# 0.1.0 (2020-06-19)
+
+## Features
+
+- Reduced version requirements to Unity 2018.2
+- Added ButtplugUnityHelper for client bringup and server management
+- Simplified and fixed example code
+
+# 0.0.1 (2020-06-18)
+
+## Features
+
+- First release of Unity Package
+- Current feature list:
+  - Exposes executable and client API
+  - Copies/updates executable to assets automatically
